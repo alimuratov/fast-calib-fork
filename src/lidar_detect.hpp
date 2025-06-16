@@ -55,6 +55,7 @@ public:
         z_min_ = params.z_min;
         z_max_ = params.z_max;
         circle_radius_ = params.circle_radius;
+        /* added use_custom_plane_cloud and custom_plane_path parameters to specify the custom plane cloud and its path */
         use_custom_plane_cloud_ = params.use_custom_plane;
         custom_plane_path_ = params.custom_plane_path;
 
@@ -68,7 +69,7 @@ public:
 
     void detect_lidar(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud, pcl::PointCloud<pcl::PointXYZ>::Ptr center_cloud)
     {
-
+        /* added cloud_params to iterate over a number of parameters sets in a single pass */
         std::vector<std::map<std::string, double>> cloud_params = {
              {{"leaf_size",0.002},{"radius_search",0.020},{"mls_radius",0.03},
              {"distance_threshold",0.003},{"min_cluster_size",80},{"max_cluster_size",600},
@@ -119,7 +120,7 @@ public:
                 voxel_filter.filter(*filtered_cloud_);
                 ROS_INFO("Filtered cloud size: %ld", filtered_cloud_->size()); 
                 
-            } else {
+            } else { /* if use_custom_plane_cloud is true, use the custom plane cloud */
                 custom_plane_cloud_ = import_pcd(custom_plane_path_);
                 filtered_cloud_ = custom_plane_cloud_;
 
@@ -182,7 +183,7 @@ public:
 
             ROS_INFO_STREAM("Aligned cloud size: " << aligned_cloud_->size());
 
-            // 1. Create the search tree object
+            /* apply MLS to densify the aligned cloud; not sure if this even works */
             pcl::search::KdTree<pcl::PointXYZ>::Ptr tree(new pcl::search::KdTree<pcl::PointXYZ>);
             pcl::PointCloud<pcl::PointXYZ>::Ptr smoothed_cloud(new pcl::PointCloud<pcl::PointXYZ>);
             pcl::MovingLeastSquares<pcl::PointXYZ, pcl::PointXYZ> mls;
@@ -220,6 +221,7 @@ public:
             }
             ROS_INFO("Extracted %ld edge points.", edge_cloud_->size());
 
+            /* save the edge cloud for debugging */
             pcl::io::savePCDFileASCII("/home/ali/Parallels Shared Folders/sharedFolder/our_edge_cloud_" + std::to_string(trial_number) + ".pcd", *edge_cloud_);
 
 
@@ -250,6 +252,7 @@ public:
                     cluster->push_back(edge_cloud_->points[idx]);
                 }
 
+                /* save the cluster for debugging */    
                 pcl::io::savePCDFileASCII("/home/ali/Parallels Shared Folders/sharedFolder/trial_" + std::to_string(trial_number) + "_cluster_" + std::to_string(i) + ".pcd", *cluster);
         
                 // 圆拟合
