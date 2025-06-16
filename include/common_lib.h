@@ -85,6 +85,8 @@ struct Params {
   string bag_path;
   string lidar_topic;
   string output_path;
+  bool use_custom_plane;
+  std::string custom_plane_path; 
 };
 
 // 读取参数
@@ -115,6 +117,8 @@ Params loadParameters(ros::NodeHandle &nh) {
   nh.param("y_max", params.y_max, 2.0);
   nh.param("z_min", params.z_min, -0.5);
   nh.param("z_max", params.z_max, 2.0);
+  nh.param("use_custom_plane", params.use_custom_plane, false);
+  nh.param("custom_plane_path", params.custom_plane_path, string("/home/chunran/calib_ws/src/fast_calib/data/custom_plane.pcd"));
   return params;
 }
 

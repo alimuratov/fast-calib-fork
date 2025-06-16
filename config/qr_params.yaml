@@ -1,33 +1,21 @@
-# Camera intrinsics  
-  # mid360
-  fx: 522.123514287681
-  fy: 522.275153384482
-  cx: 773.466430504725
-  cy: 534.053165700174
-  k1: 0.00324949759262203
-  k2: -0.0171040538369167
-  p1: 0.000669657443377146
-  p2: -0.000350205468789575
+# ouster
 
-  # avia
-  # fx: 1215.31801774424
-  # fy: 1214.72961288138
-  # cx: 1047.86571859677
-  # cy: 745.068353101898
-  # k1: -0.33574781188503
-  # k2: 0.10996870793601
-  # p1: 0.000157303079833973
-  # p2: 0.000544930726278493
+  fx: 1419.488223
+  fy: 1419.783836
+  cx: 2091.72389
+  cy: 1231.71474
+  k1: 0.4765817545
+  k2: 0.0267510319
+  p1: 1.495544387e-07
+  p2: -2.581193063e-07
+  k3: 8.833337814e-05
+  k4: 0.8074516265
+  k5: 0.1103335164
+  k6: 0.001695886702
 
-  # ouster
-  # fx: 1466.16500795563
-  # fy: 1465.32657394431
-  # cx: 1214.39964380518
-  # cy: 1010.97681425650
-  # k1: -0.0458344972140773
-  # k2: 0.0896961240772692
-  # p1: -0.000731746350601389
-  # p2: -0.000201478932371979
+# 1419.488223, 1419.783836, 2091.72389, 1231.71474, 
+# 0.4765817545, 0.0267510319, 1.495544387e-07, -2.581193063e-07, 
+# 8.833337814e-05, 0.8074516265, 0.1103335164, 0.001695886702
 
 # Calibration target parameters
   marker_size: 0.20 # ArUco marker size (our test data uses 0.16m; adjust to match your marker size)
@@ -38,17 +26,20 @@
   circle_radius: 0.12 # Radius of the circle 
 
 # Distance filter
-  x_min: 1.5
-  x_max: 3.0
+  x_min: 2.2
+  x_max: 2.6
   y_min: -1.5
   y_max: 2.0
-  z_min: -0.5 # avia and mid360: -0.5 ouster: -0.8
+  z_min: -0.8 # avia and mid360: -0.5 ouster: -0.8
   z_max: 2.0
 
 # Input
-  lidar_topic: "/livox/lidar" # /ouster/points /livox/lidar
-  bag_path: "$(find fast_calib)/calib_data/mid360/11.bag"
-  image_path: "$(find fast_calib)/calib_data/mid360/11.png"
+  lidar_topic: "/ouster/points" 
+  bag_path: "$(find fast_calib)/calib_data/11.bag"
+  image_path: "$(find fast_calib)/calib_data/our_image.jpg"
 
 # Output
   output_path: "$(find fast_calib)/output"
+
+  use_custom_plane: true
+  custom_plane_path: "/home/ali/workspaces/calib_ws/src/FAST-Calib/calib_data/our_checkboard.pcd"
